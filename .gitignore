@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Secrets, never committed
+.env
+profiles.yml
+*.token
+
+# dbt build output
+dbt/target/
+dbt/dbt_packages/
+dbt/logs/
+logs/
+
+# Data never committed (data lives in Databricks)
+data/
+*.parquet
+*.csv
+*.zip
+!dbt/seeds/*.csv
+
+# Power BI local files
+powerbi/**/.pbi/localSettings.json
+powerbi/**/.pbi/cache.abf
+
+# OS
+Thumbs.db
+.DS_Store
