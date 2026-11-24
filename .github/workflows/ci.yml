@@ -1,0 +1,36 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: No data files committed
+        run: |
+          if git ls-files | grep -E '\.(parquet|csv|zip)$' | grep -v '^dbt/seeds/'; then
+            echo "Data file committed"; exit 1
+          fi
+
+      - name: dbt installed
+        run: dbt --version
+
+      - name: Databricks reachable
+        env:
+          DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
+          DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
+        run: python -c "from databricks.sdk import WorkspaceClient; WorkspaceClient().current_user.me(); print('Databricks reachable')"
