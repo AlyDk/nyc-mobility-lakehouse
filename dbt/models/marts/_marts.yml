@@ -16,3 +16,37 @@ models:
     columns:
       - name: payment_type_key
         data_tests: [unique, not_null]
+  - name: fct_trips
+    description: One row per valid yellow or green taxi trip, 2023-2024.
+    columns:
+      - name: trip_id
+        data_tests: [unique, not_null]
+      - name: service
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ['yellow', 'green']
+      - name: pickup_date_key
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('dim_date')
+                field: date_key
+      - name: pu_zone_key
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('dim_zone')
+                field: zone_key
+      - name: do_zone_key
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('dim_zone')
+                field: zone_key
+      - name: payment_type_key
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('dim_payment_type')
+                field: payment_type_key
