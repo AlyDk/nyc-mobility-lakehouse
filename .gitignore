@@ -8,6 +8,7 @@ __pycache__/
 *.token
 
 # dbt build output
+dbt/.user.yml
 dbt/target/
 dbt/dbt_packages/
 dbt/logs/
