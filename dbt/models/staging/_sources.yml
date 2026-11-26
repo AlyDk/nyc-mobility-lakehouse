@@ -1,0 +1,13 @@
+version: 2
+
+sources:
+  - name: silver
+    database: nyc_mobility
+    schema: silver
+    tables:
+      - name: trips
+  - name: bronze
+    database: nyc_mobility
+    schema: bronze
+    tables:
+      - name: taxi_zones
