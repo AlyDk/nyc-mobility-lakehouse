@@ -1,0 +1,18 @@
+version: 2
+
+models:
+  - name: dim_date
+    description: One row per calendar day, 2023-01-01 to 2024-12-31.
+    columns:
+      - name: date_key
+        data_tests: [unique, not_null]
+  - name: dim_zone
+    description: TLC taxi zones. Airports are EWR (1), JFK (132) and LaGuardia (138).
+    columns:
+      - name: zone_key
+        data_tests: [unique, not_null]
+  - name: dim_payment_type
+    description: TLC payment codes from the March 2025 data dictionary; -1 = missing.
+    columns:
+      - name: payment_type_key
+        data_tests: [unique, not_null]
