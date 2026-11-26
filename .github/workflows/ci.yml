@@ -9,6 +9,10 @@ on:
 jobs:
   checks:
     runs-on: ubuntu-latest
+    env:
+      DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
+      DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
+      DATABRICKS_HTTP_PATH: /sql/1.0/warehouses/4f22b18ddd276212
     steps:
       - uses: actions/checkout@v5
 
@@ -26,11 +30,14 @@ jobs:
             echo "Data file committed"; exit 1
           fi
 
-      - name: dbt installed
-        run: dbt --version
-
       - name: Databricks reachable
-        env:
-          DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
-          DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
         run: python -c "from databricks.sdk import WorkspaceClient; WorkspaceClient().current_user.me(); print('Databricks reachable')"
+
+      - uses: databricks/setup-cli@main
+
+      - name: Bundle validate
+        run: databricks bundle validate
+
+      - name: dbt parse
+        working-directory: dbt
+        run: dbt parse --profiles-dir .

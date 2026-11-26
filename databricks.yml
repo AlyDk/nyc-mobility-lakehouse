@@ -21,6 +21,10 @@ resources:
     nyc_mobility_pipeline:
       name: nyc_mobility_pipeline
       max_concurrent_runs: 1
+      schedule:
+        quartz_cron_expression: "0 0 6 3 * ?"
+        timezone_id: Asia/Riyadh
+        pause_status: PAUSED
       parameters:
         - name: start_month
           default: ${var.month}
