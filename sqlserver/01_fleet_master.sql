@@ -1,9 +1,5 @@
--- Fleet master data (SQL Server). Vendor ids and names follow the TLC data dictionary.
--- platform_fee_pct is synthetic, used to demonstrate SCD2 history later.
-IF DB_ID('fleet_master') IS NULL CREATE DATABASE fleet_master;
-GO
-USE fleet_master;
-GO
+-- Fleet master data. Runs on SQL Server and Azure SQL (target database chosen with sqlcmd -d).
+-- Vendor ids and names follow the TLC data dictionary; platform_fee_pct is synthetic (SCD2 demo).
 IF SCHEMA_ID('ref') IS NULL EXEC('CREATE SCHEMA ref');
 GO
 IF OBJECT_ID('ref.vendor') IS NULL
@@ -24,4 +20,3 @@ ON t.vendor_id = s.vendor_id
 WHEN NOT MATCHED THEN
     INSERT (vendor_id, vendor_name, platform_fee_pct) VALUES (s.vendor_id, s.vendor_name, s.platform_fee_pct);
 GO
-SELECT vendor_id, vendor_name, platform_fee_pct FROM ref.vendor ORDER BY vendor_id;

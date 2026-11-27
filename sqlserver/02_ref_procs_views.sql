@@ -1,6 +1,4 @@
 -- Reference data, change procedure with audit log, and extract views (SQL Server, T-SQL).
-USE fleet_master;
-GO
 
 -- TLC rate codes (from the TLC data dictionary)
 IF OBJECT_ID('ref.rate_code') IS NULL
