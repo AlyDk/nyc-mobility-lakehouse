@@ -29,6 +29,7 @@ def main():
     client = WorkspaceClient()
     conn = mssql_python.connect(SQL_CONN)
     cur = conn.cursor()
+    results = []
     for name, view in VIEWS.items():
         table = read_view(cur, view)
         table = table.append_column("extracted_at", pa.array([now] * table.num_rows, pa.timestamp("us")))
@@ -38,7 +39,9 @@ def main():
         path = f"{LANDING}/{name}/{name}_{stamp}.parquet"
         client.files.upload(path, buf, overwrite=False)
         print(f"{name}: {table.num_rows} rows -> {path}")
+        results.append({"source": name, "rows": table.num_rows, "path": path})
     conn.close()
+    return results
 
 
 if __name__ == "__main__":
