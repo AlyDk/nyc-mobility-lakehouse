@@ -4,6 +4,7 @@ select
     trip_id,
     service,
     vendor_id,
+    coalesce(rate_code_id, 99) as rate_code_key,
     cast(date_format(pickup_date, 'yyyyMMdd') as int) as pickup_date_key,
     pickup_hour,
     pu_location_id as pu_zone_key,

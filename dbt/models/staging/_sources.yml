@@ -6,8 +6,10 @@ sources:
     schema: silver
     tables:
       - name: trips
+      - name: dim_vendor_scd2
   - name: bronze
     database: nyc_mobility
     schema: bronze
     tables:
       - name: taxi_zones
+      - name: sqlserver_rate_code

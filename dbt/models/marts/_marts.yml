@@ -6,16 +6,31 @@ models:
     columns:
       - name: date_key
         data_tests: [unique, not_null]
+
   - name: dim_zone
     description: TLC taxi zones. Airports are EWR (1), JFK (132) and LaGuardia (138).
     columns:
       - name: zone_key
         data_tests: [unique, not_null]
+
   - name: dim_payment_type
     description: TLC payment codes from the March 2025 data dictionary; -1 = missing.
     columns:
       - name: payment_type_key
         data_tests: [unique, not_null]
+
+  - name: dim_vendor
+    description: Current vendor version (SQL Server master data, SCD2 history in silver.dim_vendor_scd2).
+    columns:
+      - name: vendor_key
+        data_tests: [unique, not_null]
+
+  - name: dim_rate_code
+    description: TLC rate codes from SQL Server (latest snapshot).
+    columns:
+      - name: rate_code_key
+        data_tests: [unique, not_null]
+
   - name: fct_trips
     description: One row per valid yellow or green taxi trip, 2023-2024.
     columns:
@@ -50,3 +65,18 @@ models:
               arguments:
                 to: ref('dim_payment_type')
                 field: payment_type_key
+      - name: vendor_id
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('dim_vendor')
+                field: vendor_key
+      - name: rate_code_key
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('dim_rate_code')
+                field: rate_code_key
+
+  - name: agg_trips_zone_hour
+    description: Power BI import table at day, hour, service, pickup zone, payment type, airport and flex flag grain.
