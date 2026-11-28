@@ -53,6 +53,9 @@ resources:
         - task_key: bronze_sqlserver
           notebook_task:
             notebook_path: ./databricks/12_bronze_sqlserver.py
+        - task_key: bronze_sap
+          notebook_task:
+            notebook_path: ./databricks/13_bronze_sap.py
         - task_key: silver_trips
           depends_on:
             - task_key: bronze_yellow
@@ -71,6 +74,7 @@ resources:
           depends_on:
             - task_key: silver_trips
             - task_key: silver_vendor_scd2
+            - task_key: bronze_sap
           environment_key: dbt_env
           dbt_task:
             project_directory: ./dbt
