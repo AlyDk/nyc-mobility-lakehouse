@@ -13,3 +13,13 @@ sources:
     tables:
       - name: taxi_zones
       - name: sqlserver_rate_code
+      - name: sap_kna1
+        description: SAP customer master (synthetic extract)
+      - name: sap_mara
+        description: SAP material master (synthetic extract)
+      - name: sap_makt
+        description: SAP material descriptions (synthetic extract)
+      - name: sap_vbrk
+        description: SAP billing document headers (synthetic extract)
+      - name: sap_vbrp
+        description: SAP billing document items (synthetic extract)

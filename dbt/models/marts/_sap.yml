@@ -1,0 +1,36 @@
+version: 2
+
+models:
+  - name: dim_customer
+    description: Corporate account customers from SAP KNA1 (synthetic).
+    columns:
+      - name: customer_key
+        data_tests: [unique, not_null]
+  - name: dim_material
+    description: Billable taxi services from SAP MARA/MAKT (synthetic).
+    columns:
+      - name: material_code
+        data_tests: [unique, not_null]
+  - name: fct_billing_items
+    description: SAP SD billing items (VBRP joined to VBRK) for corporate accounts (synthetic, derived from real trips).
+    columns:
+      - name: billing_item_id
+        data_tests: [unique, not_null]
+      - name: customer_key
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('dim_customer')
+                field: customer_key
+      - name: material_code
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('dim_material')
+                field: material_code
+      - name: billing_date_key
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('dim_date')
+                field: date_key
