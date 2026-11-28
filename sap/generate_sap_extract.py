@@ -35,7 +35,7 @@ trips = (spark.table(f"{CATALOG}.gold.fct_trips").alias("f")
          .where((F.col("z.borough") == "Manhattan") & F.col("f.payment_type_key").isin(0, 1))
          .withColumn("h", F.abs(F.xxhash64("f.trip_id")))
          .where(F.col("h") % 20 == 0)
-         .select((F.col("h") % N_CUSTOMERS).alias("cust_idx"),
+         .select((F.abs(F.xxhash64(F.col("f.trip_id"), F.lit("customer"))) % N_CUSTOMERS).alias("cust_idx"),
                  F.substring(F.col("f.pickup_date_key").cast("string"), 1, 6).alias("yyyymm"),
                  F.when(F.col("f.is_flex_fare"), "TX-FLEX")
                   .when(F.col("f.is_airport_trip"), "TX-AIRPORT")
